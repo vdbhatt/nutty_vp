@@ -1,0 +1,117 @@
+
+/workspaces/nutty_vp/test/fw_without_dotp/build/nutty.elf:     file format elf32-littleriscv
+
+
+Disassembly of section .text:
+
+00000000 <_start>:
+   0:	80001197          	auipc	gp,0x80001
+   4:	80018193          	addi	gp,gp,-2048 # 80000800 <_stack_pointer+0xfff00801>
+   8:	80100117          	auipc	sp,0x80100
+   c:	ff710113          	addi	sp,sp,-9 # 800fffff <_stack_pointer+0x0>
+  10:	0f40006f          	j	104 <main>
+
+00000014 <mul>:
+  14:	fd010113          	addi	sp,sp,-48
+  18:	02812623          	sw	s0,44(sp)
+  1c:	03010413          	addi	s0,sp,48
+  20:	fca42e23          	sw	a0,-36(s0)
+  24:	fcb42c23          	sw	a1,-40(s0)
+  28:	fe042623          	sw	zero,-20(s0)
+  2c:	0200006f          	j	4c <mul+0x38>
+  30:	fec42703          	lw	a4,-20(s0)
+  34:	fdc42783          	lw	a5,-36(s0)
+  38:	00f707b3          	add	a5,a4,a5
+  3c:	fef42623          	sw	a5,-20(s0)
+  40:	fd842783          	lw	a5,-40(s0)
+  44:	fff78793          	addi	a5,a5,-1
+  48:	fcf42c23          	sw	a5,-40(s0)
+  4c:	fd842783          	lw	a5,-40(s0)
+  50:	fef040e3          	bgtz	a5,30 <mul+0x1c>
+  54:	fec42783          	lw	a5,-20(s0)
+  58:	00078513          	mv	a0,a5
+  5c:	02c12403          	lw	s0,44(sp)
+  60:	03010113          	addi	sp,sp,48
+  64:	00008067          	ret
+
+00000068 <dotp>:
+  68:	fd010113          	addi	sp,sp,-48
+  6c:	02112623          	sw	ra,44(sp)
+  70:	02812423          	sw	s0,40(sp)
+  74:	03010413          	addi	s0,sp,48
+  78:	fca42e23          	sw	a0,-36(s0)
+  7c:	fcb42c23          	sw	a1,-40(s0)
+  80:	fcc42a23          	sw	a2,-44(s0)
+  84:	fe042623          	sw	zero,-20(s0)
+  88:	fe042423          	sw	zero,-24(s0)
+  8c:	0540006f          	j	e0 <dotp+0x78>
+  90:	fe842783          	lw	a5,-24(s0)
+  94:	00279793          	slli	a5,a5,0x2
+  98:	fdc42703          	lw	a4,-36(s0)
+  9c:	00f707b3          	add	a5,a4,a5
+  a0:	0007a683          	lw	a3,0(a5)
+  a4:	fe842783          	lw	a5,-24(s0)
+  a8:	00279793          	slli	a5,a5,0x2
+  ac:	fd842703          	lw	a4,-40(s0)
+  b0:	00f707b3          	add	a5,a4,a5
+  b4:	0007a783          	lw	a5,0(a5)
+  b8:	00078593          	mv	a1,a5
+  bc:	00068513          	mv	a0,a3
+  c0:	f55ff0ef          	jal	ra,14 <mul>
+  c4:	00050713          	mv	a4,a0
+  c8:	fec42783          	lw	a5,-20(s0)
+  cc:	00e787b3          	add	a5,a5,a4
+  d0:	fef42623          	sw	a5,-20(s0)
+  d4:	fe842783          	lw	a5,-24(s0)
+  d8:	00178793          	addi	a5,a5,1
+  dc:	fef42423          	sw	a5,-24(s0)
+  e0:	fe842703          	lw	a4,-24(s0)
+  e4:	fd442783          	lw	a5,-44(s0)
+  e8:	faf744e3          	blt	a4,a5,90 <dotp+0x28>
+  ec:	fec42783          	lw	a5,-20(s0)
+  f0:	00078513          	mv	a0,a5
+  f4:	02c12083          	lw	ra,44(sp)
+  f8:	02812403          	lw	s0,40(sp)
+  fc:	03010113          	addi	sp,sp,48
+ 100:	00008067          	ret
+
+00000104 <main>:
+ 104:	fc010113          	addi	sp,sp,-64
+ 108:	02112e23          	sw	ra,60(sp)
+ 10c:	02812c23          	sw	s0,56(sp)
+ 110:	04010413          	addi	s0,sp,64
+ 114:	18400793          	li	a5,388
+ 118:	0007a603          	lw	a2,0(a5)
+ 11c:	0047a683          	lw	a3,4(a5)
+ 120:	0087a703          	lw	a4,8(a5)
+ 124:	00c7a783          	lw	a5,12(a5)
+ 128:	fec42023          	sw	a2,-32(s0)
+ 12c:	fed42223          	sw	a3,-28(s0)
+ 130:	fee42423          	sw	a4,-24(s0)
+ 134:	fef42623          	sw	a5,-20(s0)
+ 138:	18400793          	li	a5,388
+ 13c:	0007a603          	lw	a2,0(a5)
+ 140:	0047a683          	lw	a3,4(a5)
+ 144:	0087a703          	lw	a4,8(a5)
+ 148:	00c7a783          	lw	a5,12(a5)
+ 14c:	fcc42823          	sw	a2,-48(s0)
+ 150:	fcd42a23          	sw	a3,-44(s0)
+ 154:	fce42c23          	sw	a4,-40(s0)
+ 158:	fcf42e23          	sw	a5,-36(s0)
+ 15c:	fd040713          	addi	a4,s0,-48
+ 160:	fe040793          	addi	a5,s0,-32
+ 164:	00400613          	li	a2,4
+ 168:	00070593          	mv	a1,a4
+ 16c:	00078513          	mv	a0,a5
+ 170:	ef9ff0ef          	jal	ra,68 <dotp>
+ 174:	00050793          	mv	a5,a0
+ 178:	fcf42623          	sw	a5,-52(s0)
+ 17c:	00100073          	ebreak
+ 180:	0000006f          	j	180 <main+0x7c>
+ 184:	0001                	nop
+ 186:	0000                	unimp
+ 188:	0002                	c.slli64	zero
+ 18a:	0000                	unimp
+ 18c:	00000003          	lb	zero,0(zero) # 0 <_start>
+ 190:	0004                	0x4
+	...

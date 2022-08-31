@@ -1,0 +1,61 @@
+
+Memory Configuration
+
+Name             Origin             Length             Attributes
+RAM              0x0000000080000000 0x00000000000fffff xrw
+ROM              0x0000000000000000 0x00000000000fffff xr
+*default*        0x0000000000000000 0xffffffffffffffff
+
+Linker script and memory map
+
+
+.text           0x0000000000000000      0x1a4
+ *(.init)
+ .init          0x0000000000000000       0xb0 /workspaces/nutty_vp/test/fw_with_dotp/build/start.o
+                0x0000000000000000                _start
+                0x0000000000000014                CONTEXT_SWITCH
+ *(.text)
+ .text          0x00000000000000b0       0xf4 /workspaces/nutty_vp/test/fw_with_dotp/build/main.o
+                0x00000000000000b0                simple_isr
+                0x00000000000000e0                main
+ .text          0x00000000000001a4        0x0 /workspaces/nutty_vp/test/fw_with_dotp/build/start.o
+ *(.rodata)
+                [!provide]                        PROVIDE (_etext = .)
+
+.rela.dyn       0x00000000000001a4        0x0
+ .rela.init     0x00000000000001a4        0x0 /workspaces/nutty_vp/test/fw_with_dotp/build/main.o
+
+.data           0x0000000080000000        0x0 load address 0x00000000000001a4
+                0x0000000080000000                . = ALIGN (0x4)
+                0x0000000080000800                PROVIDE (_global_pointer = (. + 0x800))
+                [!provide]                        PROVIDE (_sdata = .)
+ *(.data)
+ .data          0x0000000080000000        0x0 /workspaces/nutty_vp/test/fw_with_dotp/build/main.o
+ .data          0x0000000080000000        0x0 /workspaces/nutty_vp/test/fw_with_dotp/build/start.o
+                0x0000000080000000                . = ALIGN (0x4)
+                [!provide]                        PROVIDE (_edata = .)
+
+.bss            0x0000000080000000        0x0 load address 0x00000000000001a4
+                0x0000000080000000                . = ALIGN (0x4)
+                [!provide]                        PROVIDE (_sbss = .)
+ *(.bss)
+ .bss           0x0000000080000000        0x0 /workspaces/nutty_vp/test/fw_with_dotp/build/main.o
+ .bss           0x0000000080000000        0x0 /workspaces/nutty_vp/test/fw_with_dotp/build/start.o
+ *(COMMON)
+                0x0000000080000000                . = ALIGN (0x4)
+                [!provide]                        PROVIDE (_ebss = .)
+                0x00000000800fffff                PROVIDE (_stack_pointer = (ORIGIN (RAM) + LENGTH (RAM)))
+LOAD /workspaces/nutty_vp/test/fw_with_dotp/build/main.o
+LOAD /workspaces/nutty_vp/test/fw_with_dotp/build/start.o
+OUTPUT(/workspaces/nutty_vp/test/fw_with_dotp/build/nutty.elf elf32-littleriscv)
+
+.comment        0x0000000000000000       0x12
+ .comment       0x0000000000000000       0x12 /workspaces/nutty_vp/test/fw_with_dotp/build/main.o
+                                         0x13 (size before relaxing)
+
+.riscv.attributes
+                0x0000000000000000       0x20
+ .riscv.attributes
+                0x0000000000000000       0x20 /workspaces/nutty_vp/test/fw_with_dotp/build/main.o
+ .riscv.attributes
+                0x0000000000000020       0x1e /workspaces/nutty_vp/test/fw_with_dotp/build/start.o
